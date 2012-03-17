@@ -20,6 +20,7 @@ import static org.hamcrest.CoreMatchers.*;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 
 import org.junit.Test;
 
@@ -28,15 +29,15 @@ import org.junit.Test;
  * @author tamtam180 - kirscheless at gmail.com
  *
  */
-public class MurmurHash1TestCase {
+public class MurmurHash2TestCase {
 
 	@Test
-	public void test() throws Exception {
+	public void test32() throws Exception {
 		
-		final String filename = "/testdata1.txt";
+		final String filename = "/testdata2_32.txt";
 		BufferedReader in = new BufferedReader(
 				new InputStreamReader(
-						MurmurHash1TestCase.class.getResourceAsStream(filename), 
+						MurmurHash2TestCase.class.getResourceAsStream(filename), 
 						"utf-8"
 						));
 		
@@ -51,10 +52,37 @@ public class MurmurHash1TestCase {
 			int seed = Integer.parseInt(items[1]);
 			long expect = Long.parseLong(items[2]);
 			
-			assertThat(expect, is(EncodeUtils.toUnsigned(MurmurHash1.digest32(data, seed, false))));
+			assertThat(expect, is(EncodeUtils.toUnsigned(MurmurHash2.digest32(data, seed, false))));
 			
 		}
 		
 	}
-	
+
+	@Test
+	public void test64() throws Exception {
+		
+		final String filename = "/testdata2_64.txt";
+		BufferedReader in = new BufferedReader(
+				new InputStreamReader(
+						MurmurHash2TestCase.class.getResourceAsStream(filename), 
+						"utf-8"
+						));
+		
+		String line;
+		while ((line = in.readLine()) != null) {
+			line = line.trim();
+			if (line.isEmpty()) {
+				continue;
+			}
+			String[] items = line.split("\t");
+			byte[] data = items[0].getBytes("utf-8");
+			int seed = Integer.parseInt(items[1]);
+			BigInteger expect = new BigInteger(items[2]);
+			
+			assertThat(expect, is(EncodeUtils.toUnsigned(MurmurHash2.digest64(data, seed, false))));
+			
+		}
+		
+	}
+
 }
