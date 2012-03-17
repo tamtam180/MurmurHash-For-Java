@@ -16,42 +16,67 @@
 package at.orz.hash;
 
 /**
+ * byte配列を整数に変換するユーティリティクラス。
  * @author tamtam180 - kirscheless at gmail.com
  *
  */
 public class EncodeUtils {
 	
+	/**
+	 * byte配列のi番目から4バイト読み取り、BigEndianとみなした整数を返す。
+	 * @param b データ
+	 * @param i オフセット
+	 * @return BigEndianとみなした整数
+	 */
 	public static int toIntBE(byte[] b, int i) {
 		return ((b[i+0] << 24) + (b[i+1] << 16) + (b[i+2] << 8) + (b[i+3] << 0));
 	}
 
+	/**
+	 * byte配列のi番目から4バイト読み取り、LittleEndianとみなした整数を返す。
+	 * @param b データ
+	 * @param i オフセット
+	 * @return LittleEndianとみなした整数
+	 */
 	public static int toIntLE(byte[] b, int i) {
 		return ((b[i+3] << 24) + (b[i+2] << 16) + (b[i+1] << 8) + (b[i+0] << 0));
 	}
 	
-	public static long toLongBE(byte[] b, int offset) {
+	/**
+	 * byte配列のi番目から8バイト読み取り、BigEndianとみなした整数を返す。
+	 * @param b データ
+	 * @param i オフセット
+	 * @return BigEndianとみなした整数
+	 */
+	public static long toLongBE(byte[] b, int i) {
 		
-		return (((long)b[offset+0] << 56) +
-				((long)(b[offset+1] & 255) << 48) +
-				((long)(b[offset+2] & 255) << 40) +
-				((long)(b[offset+3] & 255) << 32) +
-				((long)(b[offset+4] & 255) << 24) +
-				((b[offset+5] & 255) << 16) +
-				((b[offset+6] & 255) <<  8) +
-				((b[offset+7] & 255) <<  0));
+		return (((long)b[i+0] << 56) +
+				((long)(b[i+1] & 255) << 48) +
+				((long)(b[i+2] & 255) << 40) +
+				((long)(b[i+3] & 255) << 32) +
+				((long)(b[i+4] & 255) << 24) +
+				((b[i+5] & 255) << 16) +
+				((b[i+6] & 255) <<  8) +
+				((b[i+7] & 255) <<  0));
 		
 	}
 
-	public static long toLongLE(byte[] b, int offset) {
+	/**
+	 * byte配列のi番目から8バイト読み取り、LittleEndianとみなした整数を返す。
+	 * @param b データ
+	 * @param i オフセット
+	 * @return LittleEndianとみなした整数
+	 */
+	public static long toLongLE(byte[] b, int i) {
 		
-		return (((long)b[offset+7] << 56) +
-				((long)(b[offset+6] & 255) << 48) +
-				((long)(b[offset+5] & 255) << 40) +
-				((long)(b[offset+4] & 255) << 32) +
-				((long)(b[offset+3] & 255) << 24) +
-				((b[offset+2] & 255) << 16) +
-				((b[offset+1] & 255) <<  8) +
-				((b[offset+0] & 255) <<  0));
+		return (((long)b[i+7] << 56) +
+				((long)(b[i+6] & 255) << 48) +
+				((long)(b[i+5] & 255) << 40) +
+				((long)(b[i+4] & 255) << 32) +
+				((long)(b[i+3] & 255) << 24) +
+				((b[i+2] & 255) << 16) +
+				((b[i+1] & 255) <<  8) +
+				((b[i+0] & 255) <<  0));
 		
 	}
 	

@@ -17,11 +17,23 @@ package at.orz.hash;
 
 
 /**
- * @author tamtam180 - kirscheless at gmail.com
+ * MurmurHash2を求めるクラス。
+ * 32ビットか64ビットのハッシュ値を求める。
+ * オリジナル版はEndian依存のため、このクラスではEndianを指定できるようにしてある。
  *
+ * @author tamtam180 - kirscheless at gmail.com
+ * @see https://sites.google.com/site/murmurhash/
+ * @see http://code.google.com/p/smhasher/
  */
 public class MurmurHash2 {
 
+	/**
+	 * 指定したデータから32ビットのハッシュ値を求める。
+	 * @param data データ
+	 * @param seed シード値
+	 * @param bigendian ビッグエンディアンの場合はtrue
+	 * @return 32ビットハッシュ値
+	 */
 	public static int digest32(byte[] data, int seed, boolean bigendian) {
 		
 		final int m = 0x5bd1e995;
@@ -35,9 +47,7 @@ public class MurmurHash2 {
 
 		int i = 0;
 		for (i = 0; i < block_size; i += 4) {
-			int k = bigendian
-					? ((data[i+0] << 24) + (data[i+1] << 16) + (data[i+2] << 8) + (data[i+3] << 0))
-					: ((data[i+3] << 24) + (data[i+2] << 16) + (data[i+1] << 8) + (data[i+0] << 0));
+			int k = bigendian ? EncodeUtils.toIntBE(data, i) : EncodeUtils.toIntLE(data, i);
 					
 			k *= m;
 			k ^= k >>> r;
@@ -65,6 +75,13 @@ public class MurmurHash2 {
 		
 	}
 	
+	/**
+	 * 指定したデータから64ビットのハッシュ値を求める。
+	 * @param data データ
+	 * @param seed シード値
+	 * @param bigendian ビッグエンディアンの場合はtrue
+	 * @return 64ビットハッシュ値
+	 */
 	public static long digest64(byte[] data, long seed, boolean bigendian) {
 		
 		final long m = 0xc6a4a7935bd1e995L;

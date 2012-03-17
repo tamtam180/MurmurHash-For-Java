@@ -16,29 +16,25 @@
 package at.orz.hash;
 
 /**
+ * MurmurHash3を求めるクラス。
+ * 32ビットか128ビットのハッシュを求める。
+ * オリジナル版はEndian依存のため、このクラスではEndianを指定できるようにしてある。
+ * x86とx64のメソッドは異なる値を返す。
+ * 
  * @author tamtam180 - kirscheless at gmail.com
- *
+ * @see https://sites.google.com/site/murmurhash/
+ * @see http://code.google.com/p/smhasher/
+ * 
  */
 public class MurmurHash3 {
 	
-	private static int fmix(int h) {
-		h ^= h >>> 16;
-		h *= 0x85ebca6b;
-		h ^= h >>> 13;
-		h *= 0xc2b2ae35;
-		h ^= h >>> 16;
-		return h;
-	}
-	
-	private static long fmix(long k) {
-		k ^= k >>> 33;
-		k *= 0xff51afd7ed558ccdL;
-		k ^= k >>> 33;
-		k *= 0xc4ceb9fe1a85ec53L;
-		k ^= k >>> 33;
-		return k;
-	}
-	
+	/**
+	 * 指定したデータから32ビットのハッシュを求める。
+	 * @param data データ
+	 * @param seed シード値
+	 * @param bigendian ビッグエンディアンの場合はtrue
+	 * @return 32ビットハッシュ値
+	 */
 	public static int digest32_x86(byte[] data, int seed, boolean bigendian) {
 
 		final int len = data.length;
@@ -79,38 +75,15 @@ public class MurmurHash3 {
 		return h1;
 	}
 	
-	
-	private static int updateK(int k, int cx1, int rnum, int cx2) {
-		k *= cx1;
-		k = Integer.rotateLeft(k, rnum);
-		k *= cx2;
-		return k;
-	}
-	
-	private static int updateH(int h, int kx, int rnum, int hx, int cc) {
-		h ^= kx;
-		h = Integer.rotateLeft(h, rnum);
-		h += hx;
-		h = h * 5 + cc;
-		return h;
-	}
-
-	private static long updateK(long k, long cx1, int rnum, long cx2) {
-		k *= cx1;
-		k = Long.rotateLeft(k, rnum);
-		k *= cx2;
-		return k;
-	}
-	
-	private static long updateH(long h, long kx, int rnum, long hx, long cc) {
-		h ^= kx;
-		h = Long.rotateLeft(h, rnum);
-		h += hx;
-		h = h * 5 + cc;
-		return h;
-	}
-	
-	
+	/**
+	 * 指定したデータから128ビットのハッシュを求める。
+	 * 戻り値は長さ4のint配列。
+	 * 
+	 * @param data データ
+	 * @param seed シード値
+	 * @param bigendian ビッグエンディアンの場合はtrue
+	 * @return 128ビットのハッシュ値(長さ4のint配列)
+	 */
 	public static int[] digest128_x86(byte[] data, int seed, boolean bigendian) {
 		
 		final int c1 = 0x239b961b;
@@ -199,6 +172,15 @@ public class MurmurHash3 {
 		
 	}
 	
+	/**
+	 * 指定したデータから128ビットのハッシュを求める。
+	 * 戻り値は長さ2のlong配列。
+	 * 
+	 * @param data データ
+	 * @param seed シード値
+	 * @param bigendian ビッグエンディアンの場合はtrue
+	 * @return 128ビットのハッシュ値(長さ2のlong配列)
+	 */
 	public static long[] digest128_x64(byte[] data, int seed, boolean bigendian) {
 
 		final long c1 = 0x87c37b91114253d5L;
@@ -265,6 +247,55 @@ public class MurmurHash3 {
 		
 		return new long[]{ h1, h2 };
 		
+	}
+	
+	private static int fmix(int h) {
+		h ^= h >>> 16;
+		h *= 0x85ebca6b;
+		h ^= h >>> 13;
+		h *= 0xc2b2ae35;
+		h ^= h >>> 16;
+		return h;
+	}
+	
+	private static long fmix(long k) {
+		k ^= k >>> 33;
+		k *= 0xff51afd7ed558ccdL;
+		k ^= k >>> 33;
+		k *= 0xc4ceb9fe1a85ec53L;
+		k ^= k >>> 33;
+		return k;
+	}
+
+	
+	private static int updateK(int k, int cx1, int rnum, int cx2) {
+		k *= cx1;
+		k = Integer.rotateLeft(k, rnum);
+		k *= cx2;
+		return k;
+	}
+	
+	private static int updateH(int h, int kx, int rnum, int hx, int cc) {
+		h ^= kx;
+		h = Integer.rotateLeft(h, rnum);
+		h += hx;
+		h = h * 5 + cc;
+		return h;
+	}
+
+	private static long updateK(long k, long cx1, int rnum, long cx2) {
+		k *= cx1;
+		k = Long.rotateLeft(k, rnum);
+		k *= cx2;
+		return k;
+	}
+	
+	private static long updateH(long h, long kx, int rnum, long hx, long cc) {
+		h ^= kx;
+		h = Long.rotateLeft(h, rnum);
+		h += hx;
+		h = h * 5 + cc;
+		return h;
 	}
 	
 }
