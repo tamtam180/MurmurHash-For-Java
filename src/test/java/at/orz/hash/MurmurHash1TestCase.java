@@ -51,7 +51,7 @@ public class MurmurHash1TestCase {
 			int seed = Integer.parseInt(items[1]);
 			long expect = Long.parseLong(items[2]);
 			
-			assertThat(expect, is(EncodeUtils.toUnsigned(MurmurHash1.digest32(data, seed, false))));
+			assertThat(EncodeUtils.toUnsigned(MurmurHash1.digest32(data, seed, false)), is(expect));
 			
 		}
 		

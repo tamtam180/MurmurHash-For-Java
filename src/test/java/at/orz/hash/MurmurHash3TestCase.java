@@ -52,7 +52,7 @@ public class MurmurHash3TestCase {
 			int seed = Integer.parseInt(items[1]);
 			long expect = Long.parseLong(items[2]);
 			
-			assertThat(expect, is(EncodeUtils.toUnsigned(MurmurHash3.digest32_x86(data, seed, false))));
+			assertThat(EncodeUtils.toUnsigned(MurmurHash3.digest32_x86(data, seed, false)), is(expect));
 			
 		}
 		
@@ -83,10 +83,10 @@ public class MurmurHash3TestCase {
 			long expect4 = Long.parseLong(items[5]);
 			
 			int[] values = MurmurHash3.digest128_x86(data, seed, false);
-			assertThat(expect1, is(EncodeUtils.toUnsigned(values[0])));
-			assertThat(expect2, is(EncodeUtils.toUnsigned(values[1])));
-			assertThat(expect3, is(EncodeUtils.toUnsigned(values[2])));
-			assertThat(expect4, is(EncodeUtils.toUnsigned(values[3])));
+			assertThat(EncodeUtils.toUnsigned(values[0]), is(expect1));
+			assertThat(EncodeUtils.toUnsigned(values[1]), is(expect2));
+			assertThat(EncodeUtils.toUnsigned(values[2]), is(expect3));
+			assertThat(EncodeUtils.toUnsigned(values[3]), is(expect4));
 			
 		}
 		

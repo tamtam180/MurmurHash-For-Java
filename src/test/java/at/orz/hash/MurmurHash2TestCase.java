@@ -52,7 +52,7 @@ public class MurmurHash2TestCase {
 			int seed = Integer.parseInt(items[1]);
 			long expect = Long.parseLong(items[2]);
 			
-			assertThat(expect, is(EncodeUtils.toUnsigned(MurmurHash2.digest32(data, seed, false))));
+			assertThat(EncodeUtils.toUnsigned(MurmurHash2.digest32(data, seed, false)), is(expect));
 			
 		}
 		
@@ -79,7 +79,7 @@ public class MurmurHash2TestCase {
 			int seed = Integer.parseInt(items[1]);
 			BigInteger expect = new BigInteger(items[2]);
 			
-			assertThat(expect, is(EncodeUtils.toUnsigned(MurmurHash2.digest64(data, seed, false))));
+			assertThat(EncodeUtils.toUnsigned(MurmurHash2.digest64(data, seed, false)), is(expect));
 			
 		}
 		
