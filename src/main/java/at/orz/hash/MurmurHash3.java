@@ -218,7 +218,7 @@ public class MurmurHash3 {
 		case 11: k2 ^=       data[i+10] << 16;
 		case 10: k2 ^=       data[i+9] << 8;
 		case 9:  k2 ^=       data[i+8] << 0;
-			k2 = updateK(k2, c2, 33, k2);
+			k2 = updateK(k2, c2, 33, c1);
 			h2 ^= k2;
 		case 8: k1 ^= (long)data[i+7] << 56;
 		case 7: k1 ^= (long)data[i+6] << 48;
