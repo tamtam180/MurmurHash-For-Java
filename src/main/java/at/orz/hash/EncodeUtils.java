@@ -15,6 +15,8 @@
  */
 package at.orz.hash;
 
+import java.math.BigInteger;
+
 /**
  * byte配列を整数に変換するユーティリティクラス。
  * @author tamtam180 - kirscheless at gmail.com
@@ -77,6 +79,93 @@ public class EncodeUtils {
 				((b[i+2] & 255) << 16) +
 				((b[i+1] & 255) <<  8) +
 				((b[i+0] & 255) <<  0));
+		
+	}
+	
+	/**
+	 * 8バイト整数をビッグエンディアンのバイト配列に変換。
+	 * @param v
+	 * @return
+	 */
+	public static byte[] toBytesBE(long v) {
+		return new byte[]{
+				(byte) (v >>> 56),
+				(byte) (v >>> 48),
+				(byte) (v >>> 40),
+				(byte) (v >>> 32),
+				(byte) (v >>> 24),
+				(byte) (v >>> 16),
+				(byte) (v >>> 8),
+				(byte) (v >>> 0),
+		};
+	}
+	
+	/**
+	 * 4バイト整数をビッグエンディアンのバイト配列に変換。
+	 * @param v
+	 * @return
+	 */
+	public static byte[] toBytesBE(int v) {
+		return new byte[] {
+				(byte) ((v >>> 24) & 0xFF),
+				(byte) ((v >>> 16) & 0xFF),
+				(byte) ((v >>>  8) & 0xFF),
+				(byte) ((v >>>  0) & 0xFF)
+		};
+	}
+	
+	/**
+	 * unsignedな値に変換する。
+	 * @param value signed-int値
+	 * @return unsigned-int値
+	 */
+	public static long toUnsigned(int value) {
+		return 0xffffffffL & value;
+	}
+	
+	/**
+	 * unsignedな値に変換する。
+	 * @param value
+	 * @return
+	 */
+	public static BigInteger toUnsigned(long value) {
+		byte[] v = toBytesBE(value);
+		byte[] vv = new byte[v.length+1];
+		System.arraycopy(v, 0, vv, 1, v.length);
+		return new BigInteger(vv);
+	}
+
+	/**
+	 * unsignedな値に変換する。
+	 * @param values
+	 * @return
+	 */
+	public static BigInteger toUnsigned(int[] values) {
+		
+		byte[] buffer = new byte[values.length * 4+1];
+		for (int i = 0; i < values.length; i++) {
+			byte[] ival = toBytesBE(values[i]);
+			System.arraycopy(ival, 0, buffer, i * 4 + 1, 4);
+		}
+		
+		return new BigInteger(buffer);
+		
+	}
+	
+	/**
+	 * unsignedな値に変換する。
+	 * @param values
+	 * @return
+	 */
+	public static BigInteger toUnsigned(long[] values) {
+		
+		byte[] buffer = new byte[values.length * 8 + 1];
+		for (int i = 0; i < values.length; i++) {
+			byte[] ival = toBytesBE(values[i]);
+			System.arraycopy(ival, 0, buffer, i * 8 + 1, 8);
+		}
+		
+		return new BigInteger(buffer);
 		
 	}
 	
