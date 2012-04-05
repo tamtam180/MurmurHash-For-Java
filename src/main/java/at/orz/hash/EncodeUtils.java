@@ -31,7 +31,7 @@ public class EncodeUtils {
 	 * @return BigEndianとみなした整数
 	 */
 	public static int toIntBE(byte[] b, int i) {
-		return ((b[i+0] << 24) + (b[i+1] << 16) + (b[i+2] << 8) + (b[i+3] << 0));
+		return (((b[i+0] & 255) << 24) + ((b[i+1] & 255) << 16) + ((b[i+2] & 255) << 8) + ((b[i+3] & 255) << 0));
 	}
 
 	/**
@@ -41,7 +41,7 @@ public class EncodeUtils {
 	 * @return LittleEndianとみなした整数
 	 */
 	public static int toIntLE(byte[] b, int i) {
-		return ((b[i+3] << 24) + (b[i+2] << 16) + (b[i+1] << 8) + (b[i+0] << 0));
+		return (((b[i+3] & 255) << 24) + ((b[i+2] & 255) << 16) + ((b[i+1] & 255) << 8) + ((b[i+0] & 255) << 0));
 	}
 	
 	/**
